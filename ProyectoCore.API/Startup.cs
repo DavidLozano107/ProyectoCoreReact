@@ -7,10 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProyectoCore.Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MediatR;
+using ProyectoCore.Aplicacion.Cursos;
 
 namespace ProyectoCore.API
 {
@@ -27,11 +31,21 @@ namespace ProyectoCore.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<CursosOnlineContext>(op => 
+            {
+                op.UseSqlServer(Configuration.GetConnectionString("DefaultConexion"));
+             });
+
+            services.AddMediatR(typeof(Consulta.Manejador).Assembly);
+
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProyectoCore.API", Version = "v1" });
             });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ProyectoCore.Dominio.Entidades;
+using ProyectoCore.Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +20,12 @@ namespace ProyectoCore.API.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly CursosOnlineContext _db;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, CursosOnlineContext _db)
         {
             _logger = logger;
+            this._db = _db;
         }
 
         [HttpGet]
@@ -34,6 +39,12 @@ namespace ProyectoCore.API.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+        [HttpGet("Cursos")]
+        public async Task<List<Curso>> GetCursos()
+        {
+            var cursos = await _db.Curso.ToListAsync();
+            return cursos;
         }
     }
 }
