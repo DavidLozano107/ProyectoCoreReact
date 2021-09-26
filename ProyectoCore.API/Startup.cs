@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using ProyectoCore.Aplicacion.Cursos;
+using FluentValidation.AspNetCore;
 
 namespace ProyectoCore.API
 {
@@ -39,7 +40,7 @@ namespace ProyectoCore.API
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
 
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProyectoCore.API", Version = "v1" });

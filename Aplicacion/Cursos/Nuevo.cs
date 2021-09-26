@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using ProyectoCore.Dominio.Entidades;
 using ProyectoCore.Persistencia;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,12 +14,25 @@ namespace ProyectoCore.Aplicacion.Cursos
 {
     public class Nuevo
     {
+
         public class Ejecuta : IRequest
         {
+            //[Required]
             public string Titulo { get; set; }
             public string Descripcion { get; set; }
-            public DateTime FechaPublicacion { get; set; }
+            public DateTime? FechaPublicacion { get; set; }
         }
+
+        public class EjecutaValidacion:AbstractValidator<Ejecuta>
+        {
+            public EjecutaValidacion()
+            {
+                RuleFor(x => x.Titulo).NotEmpty();
+                RuleFor(x => x.Descripcion).NotEmpty();
+                RuleFor(x => x.FechaPublicacion).NotEmpty();
+            }
+        }
+
 
         public class Manejador : IRequestHandler<Ejecuta>
         {

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using ProyectoCore.Persistencia;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,17 @@ namespace ProyectoCore.Aplicacion.Cursos
             public string Descripcion { get; set; }
             public DateTime? FechaPublicacion { get; set; }
         }
+
+        public class EjecutaValidacion : AbstractValidator<Ejecuta>
+        {
+            public EjecutaValidacion()
+            {
+                RuleFor(x => x.Titulo).NotEmpty();
+                RuleFor(x => x.Descripcion).NotEmpty();
+                RuleFor(x => x.FechaPublicacion).NotEmpty();
+            }
+        }
+
 
         public class Manejador : IRequestHandler<Ejecuta>
         {
