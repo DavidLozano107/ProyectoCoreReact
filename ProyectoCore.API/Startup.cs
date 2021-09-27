@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using ProyectoCore.Aplicacion.Cursos;
 using FluentValidation.AspNetCore;
+using ProyectoCore.API.Middleware;
 
 namespace ProyectoCore.API
 {
@@ -52,9 +53,12 @@ namespace ProyectoCore.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseMiddleware<ManejadorErrorMidleware>();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProyectoCore.API v1"));
             }

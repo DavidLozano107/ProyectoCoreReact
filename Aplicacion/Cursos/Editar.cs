@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
 using MediatR;
+using ProyectoCore.Aplicacion.ManejadorError;
 using ProyectoCore.Persistencia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,7 +47,7 @@ namespace ProyectoCore.Aplicacion.Cursos
 
                 if (curso == null)
                 {
-                    throw new Exception("El curso no existe");
+                    throw new ManejadorExepcion(HttpStatusCode.NotFound, new { curso = "No se encontro el curso" });
                 }
 
                 curso.Titulo = request.Titulo ?? curso.Titulo;
