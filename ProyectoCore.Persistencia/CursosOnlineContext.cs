@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProyectoCore.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
@@ -8,16 +9,21 @@ using System.Threading.Tasks;
 
 namespace ProyectoCore.Persistencia
 {
-    public class CursosOnlineContext :DbContext
+    public class CursosOnlineContext : IdentityDbContext<Usuario>
     {
         public CursosOnlineContext(DbContextOptions dbContextOptions):base(dbContextOptions)
         {
 
         }
 
+
+
+
         //Definimos que hay claves primarias compuesta
        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<CursoInstructor>().HasKey(ci => new {ci.CursoId,ci.InstructorId });
         }
 

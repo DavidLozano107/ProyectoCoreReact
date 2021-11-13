@@ -11,19 +11,13 @@ namespace ProyectoCore.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CursosController : ControllerBase
+    public class CursosController : MyControllerBase
     {
-        private readonly IMediator mediator;
-
-        public CursosController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
-
+       
         [HttpGet]
         public async Task<ActionResult<List<Curso>>> GetCursos()
         {
-            var cursos = await mediator.Send(new Consulta.ListaCursos());
+            var cursos = await Mediator.Send(new Consulta.ListaCursos());
             return cursos;
 
         }
@@ -31,14 +25,14 @@ namespace ProyectoCore.API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Curso>>GetCursoById(int id)
         {
-            var curso = await mediator.Send(new ConsultaId.CursoUnico { Id=id});
+            var curso = await Mediator.Send(new ConsultaId.CursoUnico { Id=id});
             return curso;
         }
 
         [HttpPost]
         public async Task<ActionResult<Unit>> CrearCurso([FromBody] Nuevo.Ejecuta curso)
         {
-            var response = await mediator.Send(curso);
+            var response = await Mediator.Send(curso);
             return response;
 
         }
@@ -48,14 +42,14 @@ namespace ProyectoCore.API.Controllers
         public async Task<ActionResult<Unit>> EditarCurso(int id, [FromBody] Editar.Ejecuta data)
         {
             data.CursoId = id;
-            var response = await mediator.Send(data);
+            var response = await Mediator.Send(data);
             return response;
         }
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<Unit>> EliminarCurso(int id)
         {
-            var response = await mediator.Send(new Eliminar.Ejecuta { CursoId = id});
+            var response = await Mediator.Send(new Eliminar.Ejecuta { CursoId = id});
             return response;
 
         }

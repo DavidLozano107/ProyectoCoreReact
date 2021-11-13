@@ -17,6 +17,10 @@ using MediatR;
 using ProyectoCore.Aplicacion.Cursos;
 using FluentValidation.AspNetCore;
 using ProyectoCore.API.Middleware;
+using ProyectoCore.Dominio.Entidades;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ProyectoCore.API
 {
@@ -40,13 +44,21 @@ namespace ProyectoCore.API
 
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
 
-
+            //Añadimos la validación FluentValidation
             services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
+
+            //Configuracion Identity Core para trabajar dentro de webAPI. 
+            var builder = services.AddIdentityCore<Usuario>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
+            identityBuilder.AddSignInManager<SignInManager<Usuario>>();
+
+            services.TryAddSingleton<ISystemClock, SystemClock>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProyectoCore.API", Version = "v1" });
             });
-
 
         }
 

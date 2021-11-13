@@ -23,11 +23,12 @@ namespace ProyectoCore.Aplicacion.Cursos
             public DateTime? FechaPublicacion { get; set; }
         }
 
-        public class EjecutaValidacion:AbstractValidator<Ejecuta>
+        //Fluent Validation
+        public class EjecutaValidacion:AbstractValidator<Ejecuta> 
         {
             public EjecutaValidacion()
             {
-                RuleFor(x => x.Titulo).NotEmpty();
+                RuleFor(x => x.Titulo).NotEmpty().WithMessage("El titulo no puede ser vacio");
                 RuleFor(x => x.Descripcion).NotEmpty();
                 RuleFor(x => x.FechaPublicacion).NotEmpty();
             }

@@ -12,7 +12,7 @@ namespace ProyectoCore.Aplicacion.ManejadorError
         public readonly HttpStatusCode Codigo;
         public readonly object Errores;
 
-        public ManejadorExepcion(HttpStatusCode Codigo, Object Errores = null)
+        public ManejadorExepcion(HttpStatusCode Codigo, object Errores = null)
         {
             this.Codigo = Codigo;
             this.Errores = Errores;

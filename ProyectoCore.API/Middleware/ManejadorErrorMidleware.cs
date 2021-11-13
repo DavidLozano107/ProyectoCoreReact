@@ -60,9 +60,6 @@ namespace ProyectoCore.API.Middleware
                 var result = JsonConvert.SerializeObject(new { errores });
                 await context.Response.WriteAsync(result);
             }
-
-
-
         }
     }
 }
