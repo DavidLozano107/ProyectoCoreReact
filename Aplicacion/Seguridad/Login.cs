@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ProyectoCore.Aplicacion.Contratos.Interfaces;
 using ProyectoCore.Aplicacion.ManejadorError;
 using ProyectoCore.Dominio.Entidades;
 using System;
@@ -24,11 +25,13 @@ namespace ProyectoCore.Aplicacion.Seguridad
         {
             private readonly UserManager<Usuario> userManager;
             private readonly SignInManager<Usuario> signInManager;
+            private readonly IJWTGenerate jWTGenerate;
 
-            public Manejador(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
+            public Manejador(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, IJWTGenerate jWTGenerate)
             {
                 this.userManager = userManager;
                 this.signInManager = signInManager;
+                this.jWTGenerate = jWTGenerate;
             }
 
             public class EjecutaValidacion : AbstractValidator<Ejecuta>
@@ -56,7 +59,7 @@ namespace ProyectoCore.Aplicacion.Seguridad
                     return new UsuarioData
                     {
                         NombreCompleto = user.NombreCompleto,
-                        Token = "This is the data token",
+                        Token = jWTGenerate.CrearToken(user),
                         Username = user.UserName,
                         Email = user.Email,
                         Image = null 

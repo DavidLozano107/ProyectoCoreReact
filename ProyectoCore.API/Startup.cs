@@ -21,6 +21,14 @@ using ProyectoCore.Dominio.Entidades;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ProyectoCore.Aplicacion.Contratos.Interfaces;
+using ProyectoCore.Seguridad.TokenSeguridad;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using ProyectoCore.Aplicacion.Interfaces;
 
 namespace ProyectoCore.API
 {
@@ -45,7 +53,10 @@ namespace ProyectoCore.API
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
 
             //Añadimos la validación FluentValidation
-            services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
+            services.AddControllers(op => { 
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                op.Filters.Add(new AuthorizeFilter(policy));
+            }).AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
 
             //Configuracion Identity Core para trabajar dentro de webAPI. 
             var builder = services.AddIdentityCore<Usuario>();
@@ -53,8 +64,24 @@ namespace ProyectoCore.API
             identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
             identityBuilder.AddSignInManager<SignInManager<Usuario>>();
 
+            //JWT
+            services.AddScoped<IJWTGenerate, JWTGenerate>();
+            services.AddScoped<IUsuarioSesion, UsuarioSesion>();
+
+            var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(op => op.TokenValidationParameters = new TokenValidationParameters { 
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = _key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                });
+
+
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
+            //
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProyectoCore.API", Version = "v1" });
@@ -75,6 +102,7 @@ namespace ProyectoCore.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProyectoCore.API v1"));
             }
 
+            app.UseAuthentication(); //JWT
             app.UseHttpsRedirection();
 
             app.UseRouting();

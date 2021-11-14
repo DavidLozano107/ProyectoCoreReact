@@ -1,23 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dominio", "Dominio", "{16754038-13CB-444F-A33C-173AC36AA4A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoCore.Dominio", "ProyectoCore.Dominio\ProyectoCore.Dominio.csproj", "{AC67711C-8A08-45D5-8DB1-AD985E322C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProyectoCore.Dominio", "ProyectoCore.Dominio\ProyectoCore.Dominio.csproj", "{AC67711C-8A08-45D5-8DB1-AD985E322C4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistencia", "Persistencia", "{1F601DE8-5B90-45BD-AB4B-0272745F6C1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoCore.Persistencia", "ProyectoCore.Persistencia\ProyectoCore.Persistencia.csproj", "{8A82AAD3-A997-4549-B29D-CE672ED44032}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProyectoCore.Persistencia", "ProyectoCore.Persistencia\ProyectoCore.Persistencia.csproj", "{8A82AAD3-A997-4549-B29D-CE672ED44032}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aplicacion", "Aplicacion", "{79B971AF-523C-4283-A69D-3EC3D1AA86A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoCore.Aplicacion", "Aplicacion\ProyectoCore.Aplicacion.csproj", "{009D00E2-BA88-4FB9-9F39-C157F20E7DC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProyectoCore.Aplicacion", "Aplicacion\ProyectoCore.Aplicacion.csproj", "{009D00E2-BA88-4FB9-9F39-C157F20E7DC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{D53FDC53-43D4-4AE0-B302-215CAD02131C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoCore.API", "ProyectoCore.API\ProyectoCore.API.csproj", "{B9C6F134-6773-463E-9F6C-D9B6F3B6886A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProyectoCore.API", "ProyectoCore.API\ProyectoCore.API.csproj", "{B9C6F134-6773-463E-9F6C-D9B6F3B6886A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Seguridad", "Seguridad", "{1457CBB4-72C8-4EB4-8F26-C7ED7F003E23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoCore.Seguridad", "ProyectoCore.Seguridad\ProyectoCore.Seguridad.csproj", "{8D7D64E4-8A34-45D1-AF69-D1DBF9E4CED6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{B9C6F134-6773-463E-9F6C-D9B6F3B6886A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9C6F134-6773-463E-9F6C-D9B6F3B6886A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9C6F134-6773-463E-9F6C-D9B6F3B6886A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D7D64E4-8A34-45D1-AF69-D1DBF9E4CED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D7D64E4-8A34-45D1-AF69-D1DBF9E4CED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D7D64E4-8A34-45D1-AF69-D1DBF9E4CED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D7D64E4-8A34-45D1-AF69-D1DBF9E4CED6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +58,7 @@ Global
 		{8A82AAD3-A997-4549-B29D-CE672ED44032} = {1F601DE8-5B90-45BD-AB4B-0272745F6C1F}
 		{009D00E2-BA88-4FB9-9F39-C157F20E7DC2} = {79B971AF-523C-4283-A69D-3EC3D1AA86A7}
 		{B9C6F134-6773-463E-9F6C-D9B6F3B6886A} = {D53FDC53-43D4-4AE0-B302-215CAD02131C}
+		{8D7D64E4-8A34-45D1-AF69-D1DBF9E4CED6} = {1457CBB4-72C8-4EB4-8F26-C7ED7F003E23}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67D17C37-12E4-44A9-A86E-FA6E6401813F}
