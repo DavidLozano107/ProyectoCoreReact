@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ProyectoCore.Aplicacion.ManejadorError;
+using ProyectoCore.Dominio.Entidades;
 using ProyectoCore.Persistencia;
 using System;
 using System.Collections.Generic;
@@ -16,10 +18,13 @@ namespace ProyectoCore.Aplicacion.Cursos
     {
         public class Ejecuta : IRequest
         {
-            public int CursoId { get; set; }
+            public Guid CursoId { get; set; }
             public string Titulo { get; set; }
             public string Descripcion { get; set; }
             public DateTime? FechaPublicacion { get; set; }
+            public List<Guid> listaInstructor { get; set; }
+            public decimal? Precio { get; set; }
+            public decimal? PrecioPromocion { get; set; }
         }
 
         public class EjecutaValidacion : AbstractValidator<Ejecuta>
@@ -53,6 +58,57 @@ namespace ProyectoCore.Aplicacion.Cursos
                 curso.Titulo = request.Titulo ?? curso.Titulo;
                 curso.Descripcion = request.Descripcion ?? curso.Descripcion;
                 curso.FechaPublicacion = request.FechaPublicacion ?? curso.FechaPublicacion;
+
+                //Actualiza el precio o lo insertamos.
+                if (request.Precio != null || request.PrecioPromocion != null)
+                {
+                    var precioEntidad = await cursosOnlineContext.Precio.FirstOrDefaultAsync(x => x.CursoId == request.CursoId);
+
+                    if (precioEntidad != null)
+                    {
+                        precioEntidad.PrecioActual = request.Precio ?? precioEntidad.PrecioActual;
+                        precioEntidad.Promocion = request.PrecioPromocion?? precioEntidad.Promocion;
+                        cursosOnlineContext.Precio.Update(precioEntidad);
+                    }
+                    else
+                    {
+                        precioEntidad = new Precio()
+                        {
+                            CursoId = request.CursoId,
+                            PrecioActual = request.Precio ?? 0,
+                            Promocion = request.PrecioPromocion ?? 0
+                        };
+
+                        await cursosOnlineContext.Precio.AddAsync(precioEntidad);
+                    }
+
+                }
+
+
+                //Eliminamos los instructores del curso, para agregarlos despues. 
+
+                if (request.listaInstructor != null)
+                {
+                    if (request.listaInstructor.Count>0)
+                    {
+                        //Elimina los instructores de cursoInstructor del curso a actualizar. 
+                        var instructoresDB = await cursosOnlineContext.CursoInstructor.Where(x => x.CursoId == request.CursoId).ToListAsync();
+                        foreach (var InstructorCurso in instructoresDB)
+                        {
+                            cursosOnlineContext.CursoInstructor.Remove(InstructorCurso);
+                        }
+
+                        //Agrega instructores que provienen del cliente. 
+                        foreach (var InstructorId in request.listaInstructor)
+                        {
+                            cursosOnlineContext.CursoInstructor.Add(new CursoInstructor() { CursoId = request.CursoId, InstructorId = InstructorId });
+                        }
+
+                    }    
+                }
+
+           
+
 
                 cursosOnlineContext.Curso.Update(curso);
                 var response = await cursosOnlineContext.SaveChangesAsync();

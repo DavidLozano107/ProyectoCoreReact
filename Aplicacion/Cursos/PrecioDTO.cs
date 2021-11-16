@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoCore.Dominio.Entidades
+namespace ProyectoCore.Aplicacion.Cursos
 {
-    public class Precio
+    public class PrecioDTO
     {
-        [Key]
         public Guid PrecioId { get; set; }
+
+        [Column(TypeName = "decimal(18,4)")]
         public decimal PrecioActual { get; set; }
-        public  decimal Promocion { get; set; }
+
+        [Column(TypeName = "decimal(18,5)")]
+        public decimal Promocion { get; set; }
         public Guid CursoId { get; set; }
-        public Curso Curso { get; set; }
     }
 }

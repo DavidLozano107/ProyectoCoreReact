@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ProyectoCore.Aplicacion.ManejadorError;
 using ProyectoCore.Persistencia;
 using System;
@@ -15,7 +16,7 @@ namespace ProyectoCore.Aplicacion.Cursos
     {
         public class Ejecuta :IRequest
         {
-            public int CursoId { get; set; }
+            public Guid CursoId { get; set; }
         }
 
         public class Manjeador : IRequestHandler<Ejecuta>
@@ -30,8 +31,37 @@ namespace ProyectoCore.Aplicacion.Cursos
             {
                 var curso = await cursosOnlineContext.Curso.FindAsync(request.CursoId);
 
+                var CursoInstructores = cursosOnlineContext.CursoInstructor.Where(x => x.CursoId == request.CursoId);
+
+                if (CursoInstructores.Any())
+                {
+                    foreach (var CursoInstructor in CursoInstructores)
+                    {
+                        cursosOnlineContext.CursoInstructor.Remove(CursoInstructor);
+                    }
+                }
+
+                //Eliminar comentarios
+                var ComentariosCurso = cursosOnlineContext.Comentario.Where(x => x.CursoId == request.CursoId).ToList();
+                
+                if (ComentariosCurso.Any())
+                {
+                    foreach (var Comentario in ComentariosCurso)
+                    {
+                        cursosOnlineContext.Comentario.Remove(Comentario);
+                    }
+                }
+
+                //Precio
+                var PrecioDB = await cursosOnlineContext.Precio.FirstOrDefaultAsync(x => x.CursoId == request.CursoId);
+                if (PrecioDB != null)
+                {
+                    cursosOnlineContext.Precio.Remove(PrecioDB);
+                }
+
                 if (curso != null)
                 {
+                    
                     cursosOnlineContext.Curso.Remove(curso);
 
                     var response = await cursosOnlineContext.SaveChangesAsync();
@@ -44,7 +74,6 @@ namespace ProyectoCore.Aplicacion.Cursos
 
                 //throw new Exception("El curso no existe");
                 throw new ManejadorExepcion(HttpStatusCode.NotFound, new { curso = "No se encontro el curso"});
-
 
             }
         }

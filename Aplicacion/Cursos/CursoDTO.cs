@@ -1,22 +1,21 @@
-﻿using System;
+﻿using ProyectoCore.Dominio.Entidades;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoCore.Dominio.Entidades
+namespace ProyectoCore.Aplicacion.Cursos
 {
-    public class Curso
+    public class CursoDTO
     {
-        [Key]
         public Guid CursoId { get; set; }
         public string Titulo { get; set; }
         public string Descripcion { get; set; }
         public DateTime? FechaPublicacion { get; set; }
         public Byte[] FotoPortada { get; set; }
-        public Precio PrecioPromocion { get; set; }
-        public List<Comentario> Comentarios { get; set; }
-        public List<CursoInstructor> InstructorLink { get; set; }
+        public List<InstructorDTO> Instructores { get; set; }
+        public PrecioDTO Precio { get; set; }
+        public List<ComentarioDTO> Comentarios { get; set; }
     }
 }

@@ -14,13 +14,15 @@ namespace ProyectoCore.Aplicacion.Cursos
 {
     public class Nuevo
     {
-
         public class Ejecuta : IRequest
         {
-            //[Required]
             public string Titulo { get; set; }
             public string Descripcion { get; set; }
             public DateTime? FechaPublicacion { get; set; }
+            public List<Guid> ListaInstructor { get; set; }
+            public decimal Precio { get; set; }
+            public decimal PrecioPromocion { get; set; }
+
         }
 
         //Fluent Validation
@@ -31,6 +33,7 @@ namespace ProyectoCore.Aplicacion.Cursos
                 RuleFor(x => x.Titulo).NotEmpty().WithMessage("El titulo no puede ser vacio");
                 RuleFor(x => x.Descripcion).NotEmpty();
                 RuleFor(x => x.FechaPublicacion).NotEmpty();
+                RuleFor(x => x.Precio).NotEmpty();
             }
         }
 
@@ -48,19 +51,46 @@ namespace ProyectoCore.Aplicacion.Cursos
             {
                 var curso = new Curso
                 {
+                    CursoId = Guid.NewGuid(),
                     Titulo = request.Titulo,
                     Descripcion = request.Descripcion,
                     FechaPublicacion = request.FechaPublicacion
                 };
 
+                
                 cursosOnlineContext.Curso.Add(curso);
+
+                if (request.ListaInstructor!= null)
+                {
+                    foreach (var id in request.ListaInstructor)
+                    {
+                        var cursoInstructor = new CursoInstructor
+                        {
+                            CursoId = curso.CursoId,
+                            InstructorId = id
+                        };
+                        cursosOnlineContext.CursoInstructor.Add(cursoInstructor);
+                    }
+                }
+
+                //Agregar precio del curso
+                var PrecioEntity = new Precio()
+                {
+                    PrecioId = Guid.NewGuid(),
+                    CursoId = curso.CursoId,
+                    PrecioActual = request.Precio,
+                    Promocion = request.PrecioPromocion
+                };
+
+                cursosOnlineContext.Precio.Add(PrecioEntity);
+
                 var result = await cursosOnlineContext.SaveChangesAsync();
 
                 if (result > 0)
                 {
                     return Unit.Value;
                 }
-                throw new Exception("No se pudo implementar la funcion");
+                throw new Exception("No se pudo insertar el curso");
             }
         }
 

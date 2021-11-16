@@ -68,6 +68,9 @@ namespace ProyectoCore.API
             services.AddScoped<IJWTGenerate, JWTGenerate>();
             services.AddScoped<IUsuarioSesion, UsuarioSesion>();
 
+            //AutoMapper
+            services.AddAutoMapper(typeof(Consulta.Manejador));
+
             var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
