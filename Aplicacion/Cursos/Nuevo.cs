@@ -54,7 +54,8 @@ namespace ProyectoCore.Aplicacion.Cursos
                     CursoId = Guid.NewGuid(),
                     Titulo = request.Titulo,
                     Descripcion = request.Descripcion,
-                    FechaPublicacion = request.FechaPublicacion
+                    FechaPublicacion = request.FechaPublicacion,
+                    FechaCreacion = DateTime.UtcNow
                 };
 
                 

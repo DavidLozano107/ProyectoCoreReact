@@ -16,6 +16,7 @@ namespace ProyectoCore.Dominio.Entidades
         public DateTime? FechaPublicacion { get; set; }
         public Byte[] FotoPortada { get; set; }
         public Precio PrecioPromocion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
         public List<Comentario> Comentarios { get; set; }
         public List<CursoInstructor> InstructorLink { get; set; }
     }

@@ -13,6 +13,7 @@ namespace ProyectoCore.Aplicacion.Cursos
         public string Titulo { get; set; }
         public string Descripcion { get; set; }
         public DateTime? FechaPublicacion { get; set; }
+        public DateTime FechaCreacion { get; set; }
         public Byte[] FotoPortada { get; set; }
         public List<InstructorDTO> Instructores { get; set; }
         public PrecioDTO Precio { get; set; }

@@ -29,6 +29,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using ProyectoCore.Aplicacion.Interfaces;
+using ProyectoCore.Persistencia.DapperConexion;
+using ProyectoCore.Persistencia.DapperConexion.Interfaces;
+using ProyectoCore.Persistencia.DapperConexion.Instructor;
 
 namespace ProyectoCore.API
 {
@@ -49,6 +52,10 @@ namespace ProyectoCore.API
             {
                 op.UseSqlServer(Configuration.GetConnectionString("DefaultConexion"));
              });
+
+            //Dapper
+            services.AddOptions();
+            services.Configure<ConexionConfiguracion>(Configuration.GetSection("ConnectionStrings"));
 
             services.AddMediatR(typeof(Consulta.Manejador).Assembly);
 
@@ -71,6 +78,10 @@ namespace ProyectoCore.API
             //AutoMapper
             services.AddAutoMapper(typeof(Consulta.Manejador));
 
+            //Dapper
+            services.AddTransient<IFactoryConnection, FactoryConnection>();
+            services.AddScoped<IInstructor, InstructorRepositorio>();
+
             var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -84,10 +95,11 @@ namespace ProyectoCore.API
 
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
-            //
+            //Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProyectoCore.API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Servicios mantenimiento de cursos", Version = "v1" });
+                c.CustomSchemaIds(c => c.FullName); //Mediator
             });
 
         }
@@ -101,8 +113,7 @@ namespace ProyectoCore.API
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProyectoCore.API v1"));
+                
             }
 
             app.UseAuthentication(); //JWT
@@ -116,6 +127,8 @@ namespace ProyectoCore.API
             {
                 endpoints.MapControllers();
             });
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cursos Online v1"));
         }
     }
 }

@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProyectoCore.Dominio.Entidades
+namespace ProyectoCore.Persistencia.DapperConexion.Instructor
 {
-    public class Instructor
+    public class InstructorModel
     {
-        [Key]
-        public Guid InstructorId { get; set; }
+        public Guid InstructorID { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Grado { get; set; }
         public DateTime? FechaCreacion { get; set; }
-        public byte[] FotoPerfil { get; set; }
-        public List<CursoInstructor> CursoLink { get; set; }
 
     }
 }

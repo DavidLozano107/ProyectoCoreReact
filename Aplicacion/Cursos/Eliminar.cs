@@ -61,7 +61,6 @@ namespace ProyectoCore.Aplicacion.Cursos
 
                 if (curso != null)
                 {
-                    
                     cursosOnlineContext.Curso.Remove(curso);
 
                     var response = await cursosOnlineContext.SaveChangesAsync();
