@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace ProyectoCore.Persistencia.DapperConexion.Paginacion
 {
@@ -40,8 +39,8 @@ namespace ProyectoCore.Persistencia.DapperConexion.Paginacion
 
                 //INPUT:
                 parameters.Add("@NumeroPagina", NumeroPagina);
-                parameters.Add("@CantidadElementos",CantidadElemento);
-                parameters.Add("@Ordenamiento",ordenamientoColumna);
+                parameters.Add("@CantidadPagina", CantidadElemento);
+                parameters.Add("@ordenamientoColumna", ordenamientoColumna);
 
                 //OUTPUT:
                 parameters.Add("@TotalRecords", totalRecords, DbType.Int32, ParameterDirection.Output);
@@ -51,11 +50,11 @@ namespace ProyectoCore.Persistencia.DapperConexion.Paginacion
                 ListaReporte = result.Select(x => (IDictionary<string, object>)x).ToList();
                 paginacionModel.ListaRecords = ListaReporte;
 
-                paginacionModel.NumeroPagina = parameters.Get<int>("TotalPaginas");
-                paginacionModel.TotalRecords = parameters.Get<int>("TotalRecords");
+                paginacionModel.NumeroPagina = parameters.Get<int?>("@TotalPaginas");
+                paginacionModel.TotalRecords = parameters.Get<int?>("@TotalRecords");
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new Exception("No se pudo ejecutar el procedimiento almacenado");
             }

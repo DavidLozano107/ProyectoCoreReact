@@ -78,14 +78,14 @@ namespace ProyectoCore.Aplicacion.Seguridad
                 };
 
                 var result = await userManager.CreateAsync(usuario, request.Password);
-                
+
                 if (result.Succeeded)
                 {
                     return new UsuarioData()
                     {
                         Email = usuario.Email,
                         NombreCompleto = usuario.NombreCompleto,
-                        Token = iJWTGenerate.CrearToken(usuario),
+                        Token = iJWTGenerate.CrearToken(usuario, null),
                         Username = usuario.UserName
                     };
                 }

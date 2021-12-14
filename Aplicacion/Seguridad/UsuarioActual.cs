@@ -32,6 +32,7 @@ namespace ProyectoCore.Aplicacion.Seguridad
             public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
                 var usuario = await userManager.FindByNameAsync(usuarioSesion.ObtenerUsuarioSesion());
+                var ListaRoles = await userManager.GetRolesAsync(usuario);
                 
                 return new UsuarioData()
                 {
@@ -39,7 +40,7 @@ namespace ProyectoCore.Aplicacion.Seguridad
                     Username = usuario.UserName,
                     Email = usuario.Email,
                     Image = null,
-                    Token = jWTGenerate.CrearToken(usuario)
+                    Token = jWTGenerate.CrearToken(usuario, ListaRoles.ToList())
                 };
                 
                 

@@ -13,6 +13,7 @@ namespace ProyectoCore.API.Controllers
     public class InstructorController : MyControllerBase
     {
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<InstructorModel>>> ObtenerInstructores()
         {
             var InstrunctoresLista = await Mediator.Send(new Consulta.Ejecuta());
@@ -20,6 +21,7 @@ namespace ProyectoCore.API.Controllers
         }
         
         [HttpGet("{id}")]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<InstructorModel>> ObtenerInstructores(Guid id)
         {
             var Instrunctor = await Mediator.Send(new ConsultaId.Ejecuta{ InstructorId = id});

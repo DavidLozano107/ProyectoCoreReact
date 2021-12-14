@@ -32,6 +32,7 @@ using ProyectoCore.Aplicacion.Interfaces;
 using ProyectoCore.Persistencia.DapperConexion;
 using ProyectoCore.Persistencia.DapperConexion.Interfaces;
 using ProyectoCore.Persistencia.DapperConexion.Instructor;
+using ProyectoCore.Persistencia.DapperConexion.Paginacion;
 
 namespace ProyectoCore.API
 {
@@ -47,7 +48,6 @@ namespace ProyectoCore.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<CursosOnlineContext>(op => 
             {
                 op.UseSqlServer(Configuration.GetConnectionString("DefaultConexion"));
@@ -68,6 +68,11 @@ namespace ProyectoCore.API
             //Configuracion Identity Core para trabajar dentro de webAPI. 
             var builder = services.AddIdentityCore<Usuario>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            //RolManager
+            identityBuilder.AddRoles<IdentityRole>();
+            identityBuilder.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<Usuario,IdentityRole>>();
+
+
             identityBuilder.AddEntityFrameworkStores<CursosOnlineContext>();
             identityBuilder.AddSignInManager<SignInManager<Usuario>>();
 
@@ -81,6 +86,12 @@ namespace ProyectoCore.API
             //Dapper
             services.AddTransient<IFactoryConnection, FactoryConnection>();
             services.AddScoped<IInstructor, InstructorRepositorio>();
+
+            //Paginacion
+            services.AddScoped<IPaginacion, PaginacionRepositorio>();
+
+  
+
 
             var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
 

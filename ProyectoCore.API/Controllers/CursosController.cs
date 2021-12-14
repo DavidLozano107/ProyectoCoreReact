@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoCore.Aplicacion.Cursos;
 using ProyectoCore.Dominio.Entidades;
+using ProyectoCore.Persistencia.DapperConexion.Paginacion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace ProyectoCore.API.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<CursoDTO>>GetCursoById(Guid id)
         {
             var curso = await Mediator.Send(new ConsultaId.CursoUnico { Id=id});
@@ -39,7 +40,7 @@ namespace ProyectoCore.API.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<Unit>> EditarCurso(Guid id, [FromBody] Editar.Ejecuta data)
         {
             data.CursoId = id;
@@ -47,7 +48,7 @@ namespace ProyectoCore.API.Controllers
             return response;
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<Unit>> EliminarCurso(Guid id)
         {
             var response = await Mediator.Send(new Eliminar.Ejecuta { CursoId = id});
@@ -55,6 +56,12 @@ namespace ProyectoCore.API.Controllers
 
         }
 
+        [HttpPost("report")]
+        public async Task<ActionResult<PaginacionModel>> Report(PaginacionCurso.Ejecuta data)
+        {
+            return await Mediator.Send(data);   
+        }
 
     }
 }
+    

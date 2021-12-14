@@ -13,13 +13,19 @@ namespace ProyectoCore.Seguridad.TokenSeguridad
 {
     public class JWTGenerate : IJWTGenerate
     {
-        public string CrearToken(Usuario usuario)
+        public string CrearToken(Usuario Usuario, List<string> Roles)
         {
-
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId, usuario.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId, Usuario.UserName)
             };
+            if (Roles != null)
+            {
+                foreach (var Rol in Roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role,Rol));
+                }
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Mi palabra secreta"));
             var credenciales = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

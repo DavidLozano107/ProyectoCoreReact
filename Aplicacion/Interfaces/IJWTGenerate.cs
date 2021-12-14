@@ -9,6 +9,6 @@ namespace ProyectoCore.Aplicacion.Contratos.Interfaces
 {
     public interface IJWTGenerate
     {
-        string CrearToken(Usuario usuario);
+        string CrearToken(Usuario Usuario, List<string> Roles);
     }
 }

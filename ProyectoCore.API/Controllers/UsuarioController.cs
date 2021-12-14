@@ -30,5 +30,10 @@ namespace ProyectoCore.API.Controllers
             return await Mediator.Send(new UsuarioActual.Ejecuta());
         }
 
+        [HttpPut]
+        public async Task<ActionResult<UsuarioData>> Update([FromBody] UsuarioActualizar.Ejecuta data )
+        {
+            return await Mediator.Send(data);
+        }
     }
 }

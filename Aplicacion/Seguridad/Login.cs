@@ -53,13 +53,14 @@ namespace ProyectoCore.Aplicacion.Seguridad
                 }
 
                 var result= await signInManager.CheckPasswordSignInAsync(user, request.Password,false);
+                var listaRolesUsuario = await userManager.GetRolesAsync(user);
                 
                 if (result.Succeeded)
                 {
                     return new UsuarioData
                     {
                         NombreCompleto = user.NombreCompleto,
-                        Token = jWTGenerate.CrearToken(user),
+                        Token = jWTGenerate.CrearToken(user, listaRolesUsuario.ToList()),
                         Username = user.UserName,
                         Email = user.Email,
                         Image = null 
